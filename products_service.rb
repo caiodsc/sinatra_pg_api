@@ -49,8 +49,9 @@ get '/products/?' do
   ProductRepresenter.for_collection.prepare(products).to_json
 end
 
-post '/products/?' do
-  name = params[:name]
+post '/products' do
+  name = 'Caio'
+      #params[:name]
   
   if name.nil? or name.empty?
     halt 400, {:message=>"name field cannot be empty"}.to_json
