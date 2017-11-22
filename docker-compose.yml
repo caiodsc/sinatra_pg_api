@@ -1,16 +1,17 @@
-version: '2'
+version: '3'
 
 services:
   products:
     build: .
-    command: bundle exec ruby products_service.rb
     ports:
-      - "4567:4567"
+      - "9292:9292"
+    volumes:
+      - '.:/bemolbot'
     links:
       - mongodb
-      - mongodb:mongodb.cloud66.local
     environment:
       - RAILS_ENV=production
       - RACK_ENV=production
+
   mongodb:
     image: mongo

@@ -43,29 +43,47 @@ module ProductRepresenter
     "/products/#{id}"
   end
 end
+class App < Sinatra::Base
 
-get '/products/?' do
-  products = Product.all.order_by(:created_at => 'desc')
-  ProductRepresenter.for_collection.prepare(products).to_json
-end
-
-get 'product/:id' do
-  product = Product.where(name: 'Joao')
-  ProductRepresenter.for_collection.prepare(product).to_json
-end
-
-post '/products' do
-  name = 'Caio'
-      #params[:name]
-  
-  if name.nil? or name.empty?
-    halt 400, {:message=>"name field cannot be empty"}.to_json
+  get '/products/?' do
+    products = Product.all.order_by(:created_at => 'desc')
+    ProductRepresenter.for_collection.prepare(products).to_json
   end
 
-  product = Product.new(:name=>name)
-  if product.save
-    [201, product.extend(ProductRepresenter).to_json]
-  else
-    [500, {:message=>"Failed to save product"}.to_json]
+  get 'product/:id' do
+    product = Product.where(name: 'Joao')
+    ProductRepresenter.for_collection.prepare(product).to_json
+  end
+
+  post '/produto' do
+    name = 'Joao2'
+    #params[:name]
+
+    if name.nil? or name.empty?
+      halt 400, {:message=>"name field cannot be empty"}.to_json
+    end
+
+    product = Product.new(:name=>name)
+    if product.save
+      [201, product.extend(ProductRepresenter).to_json]
+    else
+      [500, {:message=>"Failed to save product"}.to_json]
+    end
+  end
+
+  post '/products' do
+    name = 'Caio'
+        #params[:name]
+
+    if name.nil? or name.empty?
+      halt 400, {:message=>"name field cannot be empty"}.to_json
+    end
+
+    product = Product.new(:name=>name)
+    if product.save
+      [201, product.extend(ProductRepresenter).to_json]
+    else
+      [500, {:message=>"Failed to save product"}.to_json]
+    end
   end
 end

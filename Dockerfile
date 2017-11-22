@@ -1,9 +1,9 @@
 FROM ruby:2.3-slim
 # Instala as nossas dependencias
-RUN apt-get update -qq && apt-get install -y build-essential
-
+RUN apt-get update && apt-get install -qq -y --no-install-recommends \
+      build-essential libpq-dev
 # Seta nosso path
-ENV INSTALL_PATH /onebitbot
+ENV INSTALL_PATH /bemolbot
 # Cria nosso diretório
 RUN mkdir -p $INSTALL_PATH
 # Seta o nosso path como o diretório principal
