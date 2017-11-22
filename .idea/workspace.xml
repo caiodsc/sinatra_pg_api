@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="03e2da94-e2b7-4c30-be24-43e904eec5d1" name="Default" comment="Port.">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/microservices-sinatra-products.iml" afterPath="$PROJECT_DIR$/.idea/microservices-sinatra-products.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    <list default="true" id="03e2da94-e2b7-4c30-be24-43e904eec5d1" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/.rakeTasks" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/microservices-sinatra-products.iml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -221,7 +226,7 @@
       <workItem from="1511212504309" duration="1090000" />
       <workItem from="1511215677068" duration="161000" />
       <workItem from="1511215911082" duration="3657000" />
-      <workItem from="1511313729654" duration="848000" />
+      <workItem from="1511313729654" duration="933000" />
     </task>
     <task id="LOCAL-00001" summary="Port.">
       <created>1511314465932</created>
@@ -230,11 +235,18 @@
       <option name="project" value="LOCAL" />
       <updated>1511314465932</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Port.">
+      <created>1511314593776</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1511314593776</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="5756000" />
+    <option name="totallyTimeSpent" value="5841000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1370" height="744" extended-state="0" />
