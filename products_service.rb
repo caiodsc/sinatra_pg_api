@@ -49,6 +49,11 @@ get '/products/?' do
   ProductRepresenter.for_collection.prepare(products).to_json
 end
 
+get 'product/:id' do
+  product = Product.where(name: 'Joao')
+  ProductRepresenter.for_collection.prepare(product).to_json
+end
+
 post '/products' do
   name = 'Caio'
       #params[:name]
