@@ -1,7 +1,3 @@
-namespace :db do
-  task :seed do
-  end
-
-  task :migrate do
-  end
-end
+require 'sinatra/activerecord'
+require 'sinatra/activerecord/rake'
+require './app'

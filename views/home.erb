@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bemol Shipping Admin</title>
+  <!-- Ícone do site -->
+  <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/2/22/Bemol.logo.png">
+  <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+  <!--Import Google Icon Font-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- Scripts -->
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+  <!--Let browser know website is optimized for mobile-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <!--<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />-->
+  <style>
+    body {
+      display: flex;
+      min-height: 100vh;
+      flex-direction: column;
+    }
+
+    main {
+      flex: 1 0 auto;
+    }
+
+    body {
+      background: #fff;
+    }
+
+    .input-field input[type=date]:focus + label,
+    .input-field input[type=text]:focus + label,
+    .input-field input[type=email]:focus + label,
+    .input-field input[type=password]:focus + label {
+      color: #e91e63;
+    }
+
+    .input-field input[type=date]:focus,
+    .input-field input[type=text]:focus,
+    .input-field input[type=email]:focus,
+    .input-field input[type=password]:focus {
+      border-bottom: 2px solid #e91e63;
+      box-shadow: none;
+    }
+  </style>
+  <script>
+      $(document).ready(function(){
+          // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+          //$('.modal-trigger').leanModal();
+
+      });
+  </script>
+</head>
+
+<body>
+<!--Import jQuery before materialize.js-->
+
+<!-- Compiled and minified JavaScript -->
+<!-- Dropdown Structure -->
+
+<ul id="dropdown1" class="dropdown-content">
+  <li><a href="#!">Minha Conta<i class="material-icons left">account_box</i></a></li>
+  <li class="divider"></li>
+  <li><a href="/login">Logout<i class="material-icons left">exit_to_app</i></a></li>
+</ul>
+<nav class="blue darken-2 nav-extended">
+  <div class="nav-wrapper">
+    <img class="brand-logo" style="height: 100%" src="icons/favicon.ico">
+    <ul class="right hide-on-med-and-down">
+      <!-- Dropdown Trigger -->
+      <li><a class="dropdown-button truncate" href="#!" data-activates="dropdown1"><i class="material-icons left">view_module</i>DTC Trading Company<i class="material-icons right">arrow_drop_down</i></a></li>
+    </ul>
+  </div>
+  <div class="nav-content">
+    <ul class="tabs tabs-transparent">
+      <li class="tab"><a class="active" href="#test1">Pagamentos</a></li>
+      <li class="tab"><a class="active" href="#test2">Vendas/Estoque</a></li>
+      <li class="tab disabled"><a href="#test3">Disabled Tab</a></li>
+      <li class="tab"><a href="#test4">Info</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div id="test1" class="col s12"></div>
+<div id="test2" class="col s12"></div>
+<div id="test3" class="col s12"></div>
+<div id="test4" class="col s12"></div>
+
+<div class="fixed-action-btn">
+  <a class="btn-floating btn-large blue darken-2">
+    <i class="large material-icons">mode_edit</i>
+  </a>
+  <ul>
+    <li><a class="btn-floating red tooltipped" data-position="left" data-delay="50" data-tooltip="Novo Agendamento" href="/schedule/new"><i class="material-icons">add</i></a></li>
+    <li><a class="btn-floating yellow darken-1 tooltipped" data-position="left" data-delay="50" data-tooltip="Editar Agendamento"><i class="material-icons">edit</i></a></li>
+    <li><a class="btn-floating green tooltipped" data-position="left" data-delay="50" data-tooltip="Contate a Central"><i class="material-icons">email</i></a></li>
+  </ul>
+</div>
+
+</body>
+
+</html>

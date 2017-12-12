@@ -5,13 +5,20 @@ gem 'sinatra'
 gem 'puma'
 gem 'rack-conneg'
 gem 'rake'
-
+gem 'whenever'
+gem "activerecord"
+gem "sinatra-activerecord"
+gem 'pg'
+gem 'pg_search'
+gem 'tux'
 
 # Mongo + Mongoid
-gem 'mongo', '~> 2.1'
-gem 'mongoid'
-gem 'bson_ext'
+#gem 'mongo', '~> 2.1'
+#gem 'mongoid'
+#gem 'bson_ext'
 
 # Roar/Representable
-gem 'roar'
-gem 'multi_json'
+#gem 'roar'
+#gem 'multi_json'
+gem 'rufus-scheduler'
+gem 'tzinfo-data'

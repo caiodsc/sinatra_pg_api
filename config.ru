@@ -3,6 +3,9 @@ require 'bundler'
 
 Bundler.require
 
-require './products_service'
+require './app'
+#require './agendador'
 
+
+#run Scheduler
 run App
