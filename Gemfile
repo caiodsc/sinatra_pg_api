@@ -11,6 +11,8 @@ gem "sinatra-activerecord"
 gem 'pg'
 gem 'pg_search'
 gem 'tux'
+gem 'faker'
+gem 'lerolero_generator'
 
 # Mongo + Mongoid
 #gem 'mongo', '~> 2.1'

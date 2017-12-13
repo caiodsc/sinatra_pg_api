@@ -50,8 +50,9 @@ class App < Sinatra::Base
         "message": "Uma venda necessita da sua aprovação:",
     }].to_json
   end
+
   get '/faqs' do
-    return Faq.all.to_json
+    return Faq.first(10).to_json
   end
 
   get '/faqs/:id' do
