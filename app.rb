@@ -74,6 +74,7 @@ class App < Sinatra::Base
     return Faq.find(params[:id]).to_json
   end
 
+
   
   post '/faqs' do
     faq_params = JSON.parse(request.body.read)
