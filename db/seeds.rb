@@ -2,7 +2,7 @@ require 'faker'
 require 'lerolero_generator'
 
 puts "Cadastrando os faqs..."
-status_codes = ["read", "unread", "processing"]
+status_codes = ["read", "unread"]
 50.times do |i|
   Faq.create!(
       question: LeroleroGenerator.sentence([1,2,3].sample),
