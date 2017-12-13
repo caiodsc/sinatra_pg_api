@@ -53,4 +53,13 @@ class App < Sinatra::Base
   get '/faqs' do
     return Faq.all.to_json
   end
+
+  get '/faqs/:id' do
+    return Faq.find(params[:id]).to_json
+  end
+
+  post '/faqs' do
+    return @params
+  end
+
 end
