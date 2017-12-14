@@ -15,6 +15,7 @@ gem 'faker'
 gem 'lerolero_generator'
 gem 'rest-client'
 gem 'facebook-messenger'
+gem 'will_paginate', '~> 3.1.0'
 # Mongo + Mongoid
 #gem 'mongo', '~> 2.1'
 #gem 'mongoid'

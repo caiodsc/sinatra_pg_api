@@ -2,6 +2,24 @@ require 'json'
 require 'sinatra'
 require 'sinatra/activerecord'
 require './config/database'
+require './chatbot'
+
+# Avoid Certificate Verification (OpenSSL::SSL::SSLError)
+require 'openssl'
+OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
+
+# Secrets
+APP_SECRET = '7295f5ec14f1490ff94d00a2ea4cfcfe'
+ACCESS_TOKEN = 'DQVJ0U3hRczU0VElnQXdIYXlNbExIblBWZAXM3d2pHcEx3RHBUa3VlLWpNdjR6ejFBdElpa0dOSWhaLWx5T2ZAZAT2J6eFkzOFJBbjR1eW53WWFrd1NabmRaTVVUOGRGQURQTk9PeWRmc1E4VkJKTXdjanRpOWlwWkxoUVkydmxtRkxxVDY0bTJVMl81R0pSX2R1STNJckNPbExqODVsTVYzU3ppSnlqbHR3emlzX1VCQUtueDdhOFE3M0xQcUpzNEZAzV3ZAsQ2pB'
+VERIFY_TOKEN = 'bemol99'
+USER_AUTH = 'admin'
+PASSWORD_AUTH = 'bemol99'
+
+# Include Facebook Messenger
+include Facebook::Messenger
+
+# Subscribe Messenger Access Token for Bot
+Facebook::Messenger::Subscriptions.subscribe(access_token: ACCESS_TOKEN)
 
 Dir["./models/*.rb"].each {|file| require file }
 
@@ -26,6 +44,9 @@ class App < Sinatra::Base
 
   post '/webhook' do
     result = JSON.parse(request.body.read)['result']
+    action = result['action']
+    parameters = result['contexts'][0]['parameters']
+    messenger_id = parameters['facebook_sender_id']
     if result['contexts'].present?
       #response = InterpretService.call(result['action'], result['contexts'][0]['parameters'])
       response = result
@@ -33,13 +54,20 @@ class App < Sinatra::Base
       #response = InterpretService.call(result['action'], result['parameters'])
       response = result
     end
+    case result['action']
+      when 'get_next_approval'
+        faq = Faq.where(:gerente_id => messenger_id, :status_code => "unread").take(1)
+        Chatbot.send_next_approval(messenger_id, faq[0][:question].to_s, "test")
+        #content_type :json
+        #{
+        #    "speech": faq[0][:question].to_s,
+        #    "displayText": faq[0][:question].to_s,
+        #    "source": 'ChatBot'
+        #}.to_json
+      else
+        # type code here
+    end
 
-    content_type :json
-    {
-        "speech": response.to_s,
-        "displayText": response.to_s,
-        "source": 'ChatBot'
-    }.to_json
   end
 
   get '/aprovacoes' do
@@ -56,6 +84,15 @@ class App < Sinatra::Base
 
   get '/faqs/read' do
     return Faq.where(:status_code => "read").to_json
+  end
+
+  get '/faqs/info' do
+    faqs = Faq.where(:status_code => "unread")
+    if faqs.empty?
+      return {}.to_json
+    else
+      return (faqs.each_with_object(Hash.new(0)) { |faq ,counts| counts[faq[:gerente_id]] += 1 }).to_json
+    end
   end
 
   get '/faqs/unread' do
@@ -102,5 +139,16 @@ class App < Sinatra::Base
     Faq.find(params[:id]).update(faq_params)
     return { :message => "Updated!"}.to_json
   end
+
+  get '/faqs/gerente/:id' do
+    faqs = Faq.where(:gerente_id => params[:id], :status_code => "unread")
+    faqs.to_json
+  end
+
+  get '/faqs/gerente/:id/first' do
+    faq = Faq.where(:gerente_id => params[:id], :status_code => "unread").take(1)
+    faq.to_json
+  end
+
 
 end

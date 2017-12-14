@@ -2,6 +2,8 @@ require 'rufus-scheduler'
 require 'sinatra'
 require 'rest-client'
 require 'facebook/messenger'
+require 'json'
+require './chatbot'
 
 # Avoid Certificate Verification (OpenSSL::SSL::SSLError)
 require 'openssl'
@@ -24,23 +26,16 @@ Facebook::Messenger::Subscriptions.subscribe(access_token: ACCESS_TOKEN)
 ENV['TZ'] = 'America/Curacao'
 
 class Scheduler < Sinatra::Base
-
+  messages = RestClient.get 'http://b233dab1.ngrok.io/faqs/info'
+  formated_hash = JSON.parse(messages.body)
   scheduler = Rufus::Scheduler.new
-
-  scheduler.every '3s' do
-    p "Hello world"
-    Bot.deliver({
-                    recipient: {
-                        id: '100022992257363'
-                    },
-                    message: {
-                        text: 'Human?'
-                    }
-                }, access_token: ACCESS_TOKEN)
+  #Chatbot.call
+  scheduler.in '3s' do
+    #p "Hello world"
+    formated_hash.each_pair do |k,v|
+      Chatbot.send_alert(k, "Olá, você possui #{v} solicitações de aprovação!")
+    end
   end
-
   scheduler.join
-
-
-
 end
+
