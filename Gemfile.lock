@@ -16,15 +16,30 @@ GEM
     bond (0.5.1)
     chronic (0.10.2)
     concurrent-ruby (1.0.5)
+    domain_name (0.5.20170404)
+      unf (>= 0.0.5, < 1.0.0)
     et-orbi (1.0.8)
       tzinfo
+    facebook-messenger (1.0.0)
+      httparty (~> 0.13, >= 0.13.7)
+      rack (>= 1.6.4)
     faker (1.8.5)
       i18n (~> 0.9.1)
+    ffi (1.9.18-x86-mingw32)
+    http-cookie (1.0.3)
+      domain_name (~> 0.5)
+    httparty (0.15.6)
+      multi_xml (>= 0.5.2)
     i18n (0.9.1)
       concurrent-ruby (~> 1.0)
     lerolero_generator (1.0.1)
+    mime-types (3.1)
+      mime-types-data (~> 3.2015)
+    mime-types-data (3.2016.0521)
     minitest (5.10.3)
+    multi_xml (0.6.0)
     mustermann (1.0.1)
+    netrc (0.11.0)
     pg (0.21.0)
     pg (0.21.0-x86-mingw32)
     pg_search (2.1.1)
@@ -40,6 +55,15 @@ GEM
     rack-test (0.6.3)
       rack (>= 1.0)
     rake (12.3.0)
+    rest-client (2.0.2)
+      http-cookie (>= 1.0.2, < 2.0)
+      mime-types (>= 1.16, < 4.0)
+      netrc (~> 0.8)
+    rest-client (2.0.2-x86-mingw32)
+      ffi (~> 1.9)
+      http-cookie (>= 1.0.2, < 2.0)
+      mime-types (>= 1.16, < 4.0)
+      netrc (~> 0.8)
     ripl (0.7.1)
       bond (~> 0.5.1)
     ripl-multi_line (0.3.1)
@@ -58,8 +82,6 @@ GEM
     sinatra-activerecord (2.0.13)
       activerecord (>= 3.2)
       sinatra (>= 1.0)
-    sinatra-strong-params (0.0.3)
-      sinatra (>= 1.4.0)
     thread_safe (0.3.6)
     tilt (2.0.8)
     tux (0.3.0)
@@ -71,6 +93,10 @@ GEM
       thread_safe (~> 0.1)
     tzinfo-data (1.2017.3)
       tzinfo (>= 1.0.0)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.7.4)
+    unf_ext (0.0.7.4-x86-mingw32)
     whenever (0.10.0)
       chronic (>= 0.6.3)
 
@@ -80,6 +106,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord
+  facebook-messenger
   faker
   lerolero_generator
   pg
@@ -87,10 +114,10 @@ DEPENDENCIES
   puma
   rack-conneg
   rake
+  rest-client
   rufus-scheduler
   sinatra
   sinatra-activerecord
-  sinatra-strong-params
   tux
   tzinfo-data
   whenever

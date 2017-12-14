@@ -71,11 +71,13 @@ class App < Sinatra::Base
   end
 
   get '/faqs/:id' do
-    return Faq.find(params[:id]).to_json
+    begin
+      return Faq.find(params[:id]).to_json
+    rescue ActiveRecord::RecordNotFound
+      return {}.to_json
+    end
   end
 
-
-  
   post '/faqs' do
     faq_params = JSON.parse(request.body.read)
     faq_params[:status_code] = "unread"

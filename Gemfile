@@ -13,6 +13,8 @@ gem 'pg_search'
 gem 'tux'
 gem 'faker'
 gem 'lerolero_generator'
+gem 'rest-client'
+gem 'facebook-messenger'
 # Mongo + Mongoid
 #gem 'mongo', '~> 2.1'
 #gem 'mongoid'
