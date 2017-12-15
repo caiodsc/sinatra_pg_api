@@ -45,7 +45,7 @@ class App < Sinatra::Base
   post '/webhook' do
     result = JSON.parse(request.body.read)['result']
     action = result['action']
-    parameters = result['contexts'][0]['parameters']
+    parameters = result['contexts'][-1]['parameters']
     messenger_id = parameters['facebook_sender_id']
     if result['contexts'].present?
       #response = InterpretService.call(result['action'], result['contexts'][0]['parameters'])
@@ -54,42 +54,61 @@ class App < Sinatra::Base
       #response = InterpretService.call(result['action'], result['parameters'])
       response = result
     end
-    case result['action']
+    p action
+    case action
       when 'get_next_approval'
         faq = Faq.where(:gerente_id => messenger_id, :status_code => "unread").take(1)
-        #Chatbot.send_next_approval(messenger_id, faq[0][:question].to_s, "test")
+        res = faq
+        #faq[0][:status_code] = "read"
+        if true
+          #Chatbot.send_next_approval(messenger_id, faq[0][:question].to_s, "test")
+          content_type :json
+          {
+              "speech": "Teste",
+              "displayText": "Teste",
+              "messages": [
+                {
+                    "speech": "Dados da Pré Venda 👇",
+                    "type": 0
+                },
+                {
+                    "speech": res[0][:question].to_s,
+                    "type": 0
+                },
+                {
+                    "buttons": [
+                        {
+                            "text": "Mais Informações"
+                        },
+                        {
+                            "postback": "Aprovar",
+                            "text": "Aprovar"
+                        },
+                        {
+                            "postback": "Reprovar",
+                            "text": "Reprovar"
+                        }
+                    ],
+                    "title": "Opções:",
+                    "type": 1
+                }
+              ],
+              "source": 'ChatBot'
+          }.to_json
+        end
+      when 'allow_first'
         content_type :json
         {
-            "speech": "Teste",
-            "displayText": "Teste",
-            "messages": [
-              {
-                  "speech": "Dados da Pré Venda 👇",
-                  "type": 0
-              },
-              {
-                  "speech": faq[0][:question].to_s,
-                  "type": 0
-              },
-              {
-                  "buttons": [
-                      {
-                          "postback": "Card Link URL or text",
-                          "text": "Mais Informações"
-                      },
-                      {
-                          "postback": "Próxima Aprovação",
-                          "text": "Aprovar"
-                      },
-                      {
-                          "postback": "Card Link URL or text",
-                          "text": "Reprovar"
-                      }
-                  ],
-                  "title": "Opções:",
-                  "type": 1
-              }
-            ],
+            "speech": "Obrigado.\nSua análise foi enviada com sucesso! 😃",
+            "displayText": "Obrigado.\nSua análise foi enviada com sucesso! 😃",
+            "source": 'ChatBot'
+        }.to_json
+
+      when 'disallow_first'
+        content_type :json
+        {
+            "speech": "Obrigado.\nSua análise foi enviada com sucesso! 😃",
+            "displayText": "Obrigado.\nSua análise foi enviada com sucesso! 😃",
             "source": 'ChatBot'
         }.to_json
       else
