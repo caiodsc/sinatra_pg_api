@@ -1,9 +1,9 @@
 require 'json'
 require 'sinatra'
 require 'sinatra/activerecord'
+require 'facebook/messenger'
 require './config/database'
 require './chatbot'
-
 # Avoid Certificate Verification (OpenSSL::SSL::SSLError)
 require 'openssl'
 OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
@@ -57,13 +57,41 @@ class App < Sinatra::Base
     case result['action']
       when 'get_next_approval'
         faq = Faq.where(:gerente_id => messenger_id, :status_code => "unread").take(1)
-        Chatbot.send_next_approval(messenger_id, faq[0][:question].to_s, "test")
-        #content_type :json
-        #{
-        #    "speech": faq[0][:question].to_s,
-        #    "displayText": faq[0][:question].to_s,
-        #    "source": 'ChatBot'
-        #}.to_json
+        #Chatbot.send_next_approval(messenger_id, faq[0][:question].to_s, "test")
+        content_type :json
+        {
+            "speech": "Teste",
+            "displayText": "Teste",
+            "messages": [
+              {
+                  "speech": "Dados da Pré Venda 👇",
+                  "type": 0
+              },
+              {
+                  "speech": faq[0][:question].to_s,
+                  "type": 0
+              },
+              {
+                  "buttons": [
+                      {
+                          "postback": "Card Link URL or text",
+                          "text": "Mais Informações"
+                      },
+                      {
+                          "postback": "Próxima Aprovação",
+                          "text": "Aprovar"
+                      },
+                      {
+                          "postback": "Card Link URL or text",
+                          "text": "Reprovar"
+                      }
+                  ],
+                  "title": "Opções:",
+                  "type": 1
+              }
+            ],
+            "source": 'ChatBot'
+        }.to_json
       else
         # type code here
     end
