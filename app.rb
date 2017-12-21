@@ -46,71 +46,106 @@ class App < Sinatra::Base
     result = JSON.parse(request.body.read)['result']
     action = result['action']
     parameters = result['contexts'][-1]['parameters']
-    messenger_id = parameters['facebook_sender_id']
-    if result['contexts'].present?
-      #response = InterpretService.call(result['action'], result['contexts'][0]['parameters'])
-      response = result
-    else
-      #response = InterpretService.call(result['action'], result['parameters'])
-      response = result
+    messenger_id = nil
+    result['contexts'].each do |context|
+      if !context['parameters']['facebook_sender_id'].nil?
+        messenger_id = context['parameters']['facebook_sender_id']
+      end
     end
-    p action
+    #if result['contexts'].present?
+      #response = InterpretService.call(result['action'], result['contexts'][0]['parameters'])
+      #response = result
+    #else
+      #response = InterpretService.call(result['action'], result['parameters'])
+      #response = result
+    #end
     case action
       when 'get_next_approval'
-        faq = Faq.where(:gerente_id => messenger_id, :status_code => "unread").take(1)
-        res = faq
-        #faq[0][:status_code] = "read"
-        if true
-          #Chatbot.send_next_approval(messenger_id, faq[0][:question].to_s, "test")
+        #faq = Faq.where(:gerente_id => messenger_id, :status_code => "unread").take(1)
+        faq = Faq.where(:gerente_id => messenger_id, :status_ap => nil).take(1)
+        if faq.empty?
           content_type :json
           {
-              "speech": "Teste",
-              "displayText": "Teste",
-              "messages": [
-                {
-                    "speech": "Dados da Pré Venda 👇",
-                    "type": 0
-                },
-                {
-                    "speech": res[0][:question].to_s,
-                    "type": 0
-                },
-                {
-                    "buttons": [
-                        {
-                            "text": "Mais Informações"
-                        },
-                        {
-                            "postback": "Aprovar",
-                            "text": "Aprovar"
-                        },
-                        {
-                            "postback": "Reprovar",
-                            "text": "Reprovar"
-                        }
-                    ],
-                    "title": "Opções:",
-                    "type": 1
-                }
-              ],
-              "source": 'ChatBot'
+              "speech": "Não há mais análises pendentes no momento! 🙂",
+              "displayText": "Não há mais análises pendentes no momento! 🙂"
+          }.to_json
+        else
+          #res = faq
+          #faq[0][:status_code] = "read"
+          if true
+            #Chatbot.send_next_approval(messenger_id, faq[0][:question].to_s, "test")
+            content_type :json
+            {
+                "messages": [
+                    {
+                        "speech": "Dados da Pré Venda 👇",
+                        "type": 0
+                    },
+                    {
+                        "speech": faq[0][:question].to_s,
+                        "type": 0
+                    },
+                    {
+                        "buttons": [
+                            {
+                                "text": "Mais Informações"
+                            },
+                            {
+                                "postback": "Aprovar",
+                                "text": "Aprovar"
+                            },
+                            {
+                                "postback": "Reprovar",
+                                "text": "Reprovar"
+                            }
+                        ],
+                        "title": "Opções:",
+                        "type": 1
+                    }
+                ]
+            }.to_json
+          end
+        end
+
+      when 'allow_first'
+        faq = Faq.where(:gerente_id => messenger_id, :status_ap => nil).take(1).first
+        faq[:status_ap] = "aprovado"
+        if faq.save
+          content_type :json
+          {
+              "messages": [{
+                "title": "Obrigado.\nSua análise foi enviada com sucesso! 😃",
+                "replies": ["Próxima Aprovação"],
+                "type": 2
+              }]
+          }.to_json
+        else
+          content_type :json
+          {
+              "speech": "Houve um erro ao processar sua análise, por favor tente novamente! 😥",
+              "displayText": "Houve um erro ao processar sua análise, por favor tente novamente! 😥"
           }.to_json
         end
-      when 'allow_first'
-        content_type :json
-        {
-            "speech": "Obrigado.\nSua análise foi enviada com sucesso! 😃",
-            "displayText": "Obrigado.\nSua análise foi enviada com sucesso! 😃",
-            "source": 'ChatBot'
-        }.to_json
 
       when 'disallow_first'
-        content_type :json
-        {
-            "speech": "Obrigado.\nSua análise foi enviada com sucesso! 😃",
-            "displayText": "Obrigado.\nSua análise foi enviada com sucesso! 😃",
-            "source": 'ChatBot'
-        }.to_json
+        faq = Faq.where(:gerente_id => messenger_id, :status_ap => nil).take(1).first
+        faq[:status_ap] = "reprovado"
+        if faq.save
+          content_type :json
+          {
+              "messages": [{
+                               "title": "Obrigado.\nSua análise foi enviada com sucesso! 😃",
+                               "replies": ["Próxima Aprovação"],
+                               "type": 2
+                           }]
+          }.to_json
+        else
+          content_type :json
+          {
+              "speech": "Houve um erro ao processar sua análise, por favor tente novamente! 😥",
+              "displayText": "Houve um erro ao processar sua análise, por favor tente novamente! 😥"
+          }.to_json
+        end
       else
         # type code here
     end
@@ -121,7 +156,7 @@ class App < Sinatra::Base
     content_type :json
     [{
         "gerente_messenger_id": "100022992257363",
-        "message": "Uma venda necessita da sua aprovação:",
+        "message": "Uma venda necessita da sua aprovação:"
     }].to_json
   end
 
@@ -130,11 +165,11 @@ class App < Sinatra::Base
   end
 
   get '/faqs/read' do
-    return Faq.where(:status_code => "read").to_json
+    return Faq.where(:status_ap => "read").to_json
   end
 
   get '/faqs/info' do
-    faqs = Faq.where(:status_code => "unread")
+    faqs = Faq.where(:status_ap => nil)
     if faqs.empty?
       return {}.to_json
     else
@@ -143,12 +178,12 @@ class App < Sinatra::Base
   end
 
   get '/faqs/unread' do
-    faqs = Faq.where(:status_code => "unread")
+    faqs = Faq.where(:status_ap => "unread")
     if faqs.empty?
       return [].to_json
     else
       faqs.each do |f|
-        f.update(:status_code => "read")
+        f.update(:status_ap => "read")
       end
     end
     return faqs.to_json
@@ -164,7 +199,7 @@ class App < Sinatra::Base
 
   post '/faqs' do
     faq_params = JSON.parse(request.body.read)
-    faq_params[:status_code] = "unread"
+    faq_params[:status_ap] = "unread"
     faq = Faq.new(faq_params)
     if faq.save
       return faq.to_json
@@ -188,12 +223,12 @@ class App < Sinatra::Base
   end
 
   get '/faqs/gerente/:id' do
-    faqs = Faq.where(:gerente_id => params[:id], :status_code => "unread")
+    faqs = Faq.where(:gerente_id => params[:id], :status_ap => nil)
     faqs.to_json
   end
 
   get '/faqs/gerente/:id/first' do
-    faq = Faq.where(:gerente_id => params[:id], :status_code => "unread").take(1)
+    faq = Faq.where(:gerente_id => params[:id], :status_ap => nil).take(1)
     faq.to_json
   end
 

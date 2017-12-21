@@ -40,7 +40,6 @@ GEM
     multi_xml (0.6.0)
     mustermann (1.0.1)
     netrc (0.11.0)
-    pg (0.21.0)
     pg (0.21.0-x86-mingw32)
     pg_search (2.1.1)
       activerecord (>= 4.2)
@@ -55,10 +54,6 @@ GEM
     rack-test (0.6.3)
       rack (>= 1.0)
     rake (12.3.0)
-    rest-client (2.0.2)
-      http-cookie (>= 1.0.2, < 2.0)
-      mime-types (>= 1.16, < 4.0)
-      netrc (~> 0.8)
     rest-client (2.0.2-x86-mingw32)
       ffi (~> 1.9)
       http-cookie (>= 1.0.2, < 2.0)
@@ -95,14 +90,12 @@ GEM
       tzinfo (>= 1.0.0)
     unf (0.1.4)
       unf_ext
-    unf_ext (0.0.7.4)
     unf_ext (0.0.7.4-x86-mingw32)
     whenever (0.10.0)
       chronic (>= 0.6.3)
     will_paginate (3.1.6)
 
 PLATFORMS
-  ruby
   x86-mingw32
 
 DEPENDENCIES

@@ -3,13 +3,13 @@ require 'lerolero_generator'
 
 puts "Cadastrando os faqs..."
 status_codes = ["read", "unread"]
-gerentes_id = %w(100019196164902 100022992257363 100022828969944)
+gerentes_id = %w( 100022992257363 ) #%w(100019196164902 100022992257363 100022828969944)
 cliente_kind = %w(Azul Prata Ouro Diamante)
 yes_no = %w(SIM NÃO)
 conceito_oo = ["Em PCI", "Registro no SPC", "Parcela em atraso", "Em dia"]
 conceito_p = %w(Pendente Repactuação CANCELADO Liquidado)
 
-50.times do |i|
+10.times do |i|
 sal = Faker::Number.between(1, 19)
 n_parcelas = Faker::Number.between(2, 12)
 val = Faker::Number.between(1, 5)
@@ -45,8 +45,8 @@ Restrição de Crédito: #{yes_no.sample}"
 
   Faq.create!(
       question: message,#LeroleroGenerator.sentence([1,2,3].sample),
-      gerente_id: gerentes_id.sample, #Faker::Code.ean,
-      status_code: status_codes.sample
+      gerente_id: gerentes_id.sample #Faker::Code.ean,
+      #status_code: status_codes.sample
   )
 end
 puts "Faqs cadastrados com sucesso!"

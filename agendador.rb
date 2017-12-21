@@ -26,16 +26,19 @@ Facebook::Messenger::Subscriptions.subscribe(access_token: ACCESS_TOKEN)
 ENV['TZ'] = 'America/Curacao'
 
 class Scheduler < Sinatra::Base
-  messages = RestClient.get 'http://07850cfc.ngrok.io/faqs/info'
-  formated_hash = JSON.parse(messages.body)
-  scheduler = Rufus::Scheduler.new
-  #Chatbot.call
-  scheduler.in '3s' do
-    #p "Hello world"
-    formated_hash.each_pair do |k,v|
-      Chatbot.send_alert(k, "Olá 😃\nVocê possui #{v} solicitações de aprovação de credito para análise!")
+    scheduler = Rufus::Scheduler.new
+    #Chatbot.call
+    scheduler.in '30s' do
+      messages = RestClient.get 'http://8a7584ea.ngrok.io/faqs/info'
+      formated_hash = JSON.parse(messages.body)
+      if formated_hash.empty?
+        p "Empty faqs"
+      else
+        formated_hash.each_pair do |k,v|
+          Chatbot.send_alert(k, "Olá 😃\nVocê possui #{v} solicitações de aprovação de credito para análise!")
+        end
+      end
     end
-  end
-  scheduler.join
+    scheduler.join
 end
 
