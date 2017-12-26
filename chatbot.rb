@@ -18,7 +18,7 @@ class Chatbot
                             {
                                 content_type: 'text',
                                 title: 'Ocupado',
-                                payload: 'HARMLESS'
+                                payload: 'Ocupado'
                             }
                         ]
                     }

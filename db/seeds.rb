@@ -1,9 +1,16 @@
 require 'faker'
 require 'lerolero_generator'
 
+
+Manager.create!(:name => "Caio Câmara", :user_id => "100022992257363")
+Manager.create!(:name => "Sonny Miranda", :user_id => "100019196164902")
+Manager.create!(:name => "Adriano Cunha", :user_id => "100022828969944")
+
+gerentes = Manager.all
+
 puts "Cadastrando os faqs..."
 status_codes = ["read", "unread"]
-gerentes_id = %w( 100022992257363 ) #%w(100019196164902 100022992257363 100022828969944)
+gerentes_id = %w( 1 ) #%w(100019196164902 100022992257363 100022828969944)
 cliente_kind = %w(Azul Prata Ouro Diamante)
 yes_no = %w(SIM NÃO)
 conceito_oo = ["Em PCI", "Registro no SPC", "Parcela em atraso", "Em dia"]
@@ -45,7 +52,8 @@ Restrição de Crédito: #{yes_no.sample}"
 
   Faq.create!(
       question: message,#LeroleroGenerator.sentence([1,2,3].sample),
-      gerente_id: gerentes_id.sample #Faker::Code.ean,
+      #manager_id: gerentes_id.sample.to_i #Faker::Code.ean,
+      manager_id: gerentes.sample.id #Faker::Code.ean,
       #status_code: status_codes.sample
   )
 end

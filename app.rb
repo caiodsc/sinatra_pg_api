@@ -173,7 +173,7 @@ class App < Sinatra::Base
     if faqs.empty?
       return {}.to_json
     else
-      return (faqs.each_with_object(Hash.new(0)) { |faq ,counts| counts[faq[:gerente_id]] += 1 }).to_json
+      return (faqs.each_with_object(Hash.new(0)) { |faq ,counts| counts[faq[:manager_id]] += 1 }).to_json
     end
   end
 

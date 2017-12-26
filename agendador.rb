@@ -5,6 +5,10 @@ require 'facebook/messenger'
 require 'json'
 require './chatbot'
 
+require 'sinatra/activerecord'
+require './config/database'
+
+Dir["./models/*.rb"].each {|file| require file }
 # Avoid Certificate Verification (OpenSSL::SSL::SSLError)
 require 'openssl'
 OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
@@ -26,16 +30,18 @@ Facebook::Messenger::Subscriptions.subscribe(access_token: ACCESS_TOKEN)
 ENV['TZ'] = 'America/Curacao'
 
 class Scheduler < Sinatra::Base
+    #puts(Faq.first.question)
     scheduler = Rufus::Scheduler.new
     #Chatbot.call
-    scheduler.in '30s' do
-      messages = RestClient.get 'http://8a7584ea.ngrok.io/faqs/info'
+    scheduler.in '3s' do
+      messages = RestClient.get 'http://localhost:9292/faqs/info'
       formated_hash = JSON.parse(messages.body)
       if formated_hash.empty?
         p "Empty faqs"
       else
+        p formated_hash
         formated_hash.each_pair do |k,v|
-          Chatbot.send_alert(k, "Olá 😃\nVocê possui #{v} solicitações de aprovação de credito para análise!")
+          #Chatbot.send_alert(k, "Olá 😃\nVocê possui #{v} solicitações de aprovação de credito para análise!")
         end
       end
     end
