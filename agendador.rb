@@ -31,17 +31,31 @@ ENV['TZ'] = 'America/Curacao'
 
 class Scheduler < Sinatra::Base
     #puts(Faq.first.question)
-    scheduler = Rufus::Scheduler.new
+  #p c = Manager.includes(:faqs).first
+  #p c.faqs
+  #p c.faqs
+  #p "#############################################################################"
+  #p d = Manager.first
+  #p d.faqs
+  #p d.faqs
+  scheduler = Rufus::Scheduler.new
     #Chatbot.call
     scheduler.in '3s' do
       messages = RestClient.get 'http://localhost:9292/faqs/info'
       formated_hash = JSON.parse(messages.body)
+      formated_hash.each_key do |f|
+        #p Faq.find(f)
+      end
       if formated_hash.empty?
         p "Empty faqs"
       else
         p formated_hash
         formated_hash.each_pair do |k,v|
-          #Chatbot.send_alert(k, "Olá 😃\nVocê possui #{v} solicitações de aprovação de credito para análise!")
+          gerente = Manager.find(k)
+          if gerente.last_activity.nil? || gerente.last_activity < 5.minutes.ago
+            puts("true")
+            Chatbot.send_alert(gerente.user_id, "Olá 😃\nVocê possui #{v} solicitações de aprovação de credito para análise!")
+          end
         end
       end
     end
