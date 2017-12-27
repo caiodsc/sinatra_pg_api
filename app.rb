@@ -62,7 +62,10 @@ class App < Sinatra::Base
     case action
       when 'get_next_approval'
         #faq = Faq.where(:gerente_id => messenger_id, :status_code => "unread").take(1)
-        faq = Faq.where(:gerente_id => messenger_id, :status_ap => nil).take(1)
+        #faq = Faq.where(:gerente_id => messenger_id, :status_ap => nil).take(1)
+        man = Manager.includes(:faqs).where(:user_id => messenger_id).take(1)
+        man[0].update(:last_activity => Time.now)
+        faq = man[0].faqs.where(:status_ap => nil).take(1)
         if faq.empty?
           content_type :json
           {
@@ -108,7 +111,20 @@ class App < Sinatra::Base
         end
 
       when 'allow_first'
-        faq = Faq.where(:gerente_id => messenger_id, :status_ap => nil).take(1).first
+        #faq = Faq.where(:gerente_id => messenger_id, :status_ap => nil).take(1).first
+        man = Manager.includes(:faqs).where(:user_id => messenger_id).take(1)
+        man[0].update(:last_activity => Time.now)
+        faq = man[0].faqs.where(:status_ap => nil).take(1)
+        p faq.size
+        if faq.empty?
+          content_type :json
+          return {
+              "speech": "Houve um erro ao processar sua análise, por favor tente novamente! 😥",
+              "displayText": "Houve um erro ao processar sua análise, por favor tente novamente! 😥"
+            }.to_json
+        else
+          faq = faq[0]
+        end
         faq[:status_ap] = "aprovado"
         if faq.save
           content_type :json
@@ -128,7 +144,19 @@ class App < Sinatra::Base
         end
 
       when 'disallow_first'
-        faq = Faq.where(:gerente_id => messenger_id, :status_ap => nil).take(1).first
+        #faq = Faq.where(:gerente_id => messenger_id, :status_ap => nil).take(1).first
+        man = Manager.includes(:faqs).where(:user_id => messenger_id).take(1)
+        man[0].update(:last_activity => Time.now)
+        faq = man[0].faqs.where(:status_ap => nil).take(1)
+        if faq.empty?
+          content_type :json
+          return {
+              "speech": "Houve um erro ao processar sua análise, por favor tente novamente! 😥",
+              "displayText": "Houve um erro ao processar sua análise, por favor tente novamente! 😥"
+            }.to_json
+        else
+          faq = faq[0]
+        end
         faq[:status_ap] = "reprovado"
         if faq.save
           content_type :json

@@ -40,7 +40,7 @@ class Scheduler < Sinatra::Base
   #p d.faqs
   scheduler = Rufus::Scheduler.new
     #Chatbot.call
-    scheduler.in '3s' do
+    scheduler.every '10s' do
       messages = RestClient.get 'http://localhost:9292/faqs/info'
       formated_hash = JSON.parse(messages.body)
       formated_hash.each_key do |f|
@@ -52,7 +52,7 @@ class Scheduler < Sinatra::Base
         p formated_hash
         formated_hash.each_pair do |k,v|
           gerente = Manager.find(k)
-          if gerente.last_activity.nil? || gerente.last_activity < 5.minutes.ago
+          if gerente.last_activity.nil? || gerente.last_activity < 1.minutes.ago
             puts("true")
             Chatbot.send_alert(gerente.user_id, "Olá 😃\nVocê possui #{v} solicitações de aprovação de credito para análise!")
           end
