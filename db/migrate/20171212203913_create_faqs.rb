@@ -6,7 +6,7 @@ class CreateFaqs < ActiveRecord::Migration[5.1]
       t.references :manager, index: true, foreign_key: true
       #t.string :status_code
       t.string :status_ap
-      #t.timestamps
+      t.timestamps
     end
   end
 end

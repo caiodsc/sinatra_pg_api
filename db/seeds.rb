@@ -2,9 +2,9 @@ require 'faker'
 require 'lerolero_generator'
 
 
-Manager.create!(:name => "Caio Câmara", :user_id => "100022992257363")
-Manager.create!(:name => "Sonny Miranda", :user_id => "100019196164902")
-Manager.create!(:name => "Adriano Cunha", :user_id => "100022828969944")
+Manager.create!(:name => "Caio Câmara", :user_id => "100022992257363", :last_activity => Time.now)
+Manager.create!(:name => "Sonny Miranda", :user_id => "100019196164902", :last_activity => Time.now)
+Manager.create!(:name => "Adriano Cunha", :user_id => "100022828969944", :last_activity => Time.now)
 
 gerentes = Manager.all
 

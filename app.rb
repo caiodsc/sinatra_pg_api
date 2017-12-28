@@ -6,6 +6,9 @@ require './config/database'
 require './chatbot'
 # Avoid Certificate Verification (OpenSSL::SSL::SSLError)
 require 'openssl'
+#require 'puma'
+require 'rack/ssl'
+
 OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 
 # Secrets
@@ -17,14 +20,15 @@ PASSWORD_AUTH = 'bemol99'
 
 # Include Facebook Messenger
 include Facebook::Messenger
-
 # Subscribe Messenger Access Token for Bot
 Facebook::Messenger::Subscriptions.subscribe(access_token: ACCESS_TOKEN)
 
 Dir["./models/*.rb"].each {|file| require file }
 
+#configure { set :server, :puma }
 
 class App < Sinatra::Base
+  #use Rack::SSL
 
   get '/schedule/new' do
     erb :schedule_new
@@ -66,6 +70,10 @@ class App < Sinatra::Base
         man = Manager.includes(:faqs).where(:user_id => messenger_id).take(1)
         man[0].update(:last_activity => Time.now)
         faq = man[0].faqs.where(:status_ap => nil).take(1)
+        while !faq.empty? && faq[0].updated_at < 5.minutes.ago do
+          faq[0].update(:status_ap => "expirado")
+          faq = man[0].faqs.where(:status_ap => nil).take(1)
+        end
         if faq.empty?
           content_type :json
           {
@@ -115,7 +123,7 @@ class App < Sinatra::Base
         man = Manager.includes(:faqs).where(:user_id => messenger_id).take(1)
         man[0].update(:last_activity => Time.now)
         faq = man[0].faqs.where(:status_ap => nil).take(1)
-        p faq.size
+        #p faq.size
         if faq.empty?
           content_type :json
           return {

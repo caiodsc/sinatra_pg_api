@@ -51,6 +51,8 @@ GEM
       rack (>= 1.0)
     rack-protection (2.0.0)
       rack
+    rack-ssl (1.4.1)
+      rack
     rack-test (0.6.3)
       rack (>= 1.0)
     rake (12.3.0)
@@ -107,6 +109,7 @@ DEPENDENCIES
   pg_search
   puma
   rack-conneg
+  rack-ssl
   rake
   rest-client
   rufus-scheduler

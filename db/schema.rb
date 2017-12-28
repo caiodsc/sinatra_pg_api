@@ -19,6 +19,8 @@ ActiveRecord::Schema.define(version: 20171212203913) do
     t.string "question"
     t.bigint "manager_id"
     t.string "status_ap"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["manager_id"], name: "index_faqs_on_manager_id"
   end
 
