@@ -8,11 +8,12 @@ require './chatbot'
 require 'openssl'
 #require 'puma'
 require 'rack/ssl'
+require_relative './encrypt_decrypt.rb'
 
 OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 
 # Secrets
-APP_SECRET = '7295f5ec14f1490ff94d00a2ea4cfcfe'
+#APP_SECRET = '7295f5ec14f1490ff94d00a2ea4cfcfe'
 ACCESS_TOKEN = 'DQVJ0U3hRczU0VElnQXdIYXlNbExIblBWZAXM3d2pHcEx3RHBUa3VlLWpNdjR6ejFBdElpa0dOSWhaLWx5T2ZAZAT2J6eFkzOFJBbjR1eW53WWFrd1NabmRaTVVUOGRGQURQTk9PeWRmc1E4VkJKTXdjanRpOWlwWkxoUVkydmxtRkxxVDY0bTJVMl81R0pSX2R1STNJckNPbExqODVsTVYzU3ppSnlqbHR3emlzX1VCQUtueDdhOFE3M0xQcUpzNEZAzV3ZAsQ2pB'
 VERIFY_TOKEN = 'bemol99'
 USER_AUTH = 'admin'
@@ -70,7 +71,7 @@ class App < Sinatra::Base
         man = Manager.includes(:faqs).where(:user_id => messenger_id).take(1)
         man[0].update(:last_activity => Time.now)
         faq = man[0].faqs.where(:status_ap => nil).take(1)
-        while !faq.empty? && faq[0].updated_at < 5.minutes.ago do
+        while !faq.empty? && faq[0].updated_at < 10.minutes.ago do
           faq[0].update(:status_ap => "expirado")
           faq = man[0].faqs.where(:status_ap => nil).take(1)
         end
@@ -85,36 +86,9 @@ class App < Sinatra::Base
           #faq[0][:status_code] = "read"
           if true
             #Chatbot.send_next_approval(messenger_id, faq[0][:question].to_s, "test")
-            content_type :json
-            {
-                "messages": [
-                    {
-                        "speech": "Dados da Pré Venda 👇",
-                        "type": 0
-                    },
-                    {
-                        "speech": faq[0][:question].to_s,
-                        "type": 0
-                    },
-                    {
-                        "buttons": [
-                            {
-                                "text": "Mais Informações"
-                            },
-                            {
-                                "postback": "Aprovar",
-                                "text": "Aprovar"
-                            },
-                            {
-                                "postback": "Reprovar",
-                                "text": "Reprovar"
-                            }
-                        ],
-                        "title": "Opções:",
-                        "type": 1
-                    }
-                ]
-            }.to_json
+            Chatbot.send_text(messenger_id, "Dados da Pré Venda 👇")
+            Chatbot.send_text(messenger_id, faq[0][:question].to_s)
+            Chatbot.send_next_approval(messenger_id, request.base_url.to_s)
           end
         end
 
@@ -266,7 +240,8 @@ class App < Sinatra::Base
   get '/faqs/gerente/:id/last' do
     request_type = (JSON.parse(request.accept[0].to_json))["type"]
     p request_type
-    man = Manager.includes(:faqs).where(:user_id => params[:id]).take(1)
+    p '100022992257363'.encrypt
+    man = Manager.includes(:faqs).where(:user_id => params[:id].decrypt).take(1)
     man[0].update(:last_activity => Time.now)
     @faq = man[0].faqs.where(:status_ap => nil).take(1).first
     #p @faq["question"]
@@ -276,9 +251,6 @@ class App < Sinatra::Base
         erb :more_info
         #return request.accept[0].to_json
       when 'application/json'
-        man = Manager.includes(:faqs).where(:user_id => params[:id]).take(1)
-        man[0].update(:last_activity => Time.now)
-        faq = man[0].faqs.where(:status_ap => nil).take(1)
         #faq = Faq.where(:gerente_id => params[:id], :status_ap => nil).take(1)
         return @faq.to_json
     end

@@ -1,7 +1,8 @@
 require 'openssl'
 #OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 
-require_relative './config'
+#require_relative './config'
+APP_SECRET = '5d76113a80eb2cf1bea80a6c7a9acc64'
 
 class String
   def encrypt#(key)
@@ -30,3 +31,4 @@ end
 #puts cipher.decrypt(key)              # confidential
 
 puts 'Caio'.encrypt
+puts '17B3F79D4FE4802D'.decrypt

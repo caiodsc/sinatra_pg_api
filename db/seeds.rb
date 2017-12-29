@@ -33,7 +33,7 @@ Funcionário: #{yes_no.sample}
 Salario:
 R$ #{sal}001,00 - R$ #{sal.to_i + 1}000,00
 
-Últimos Conceitos::
+Últimos Conceitos:
 Conceito OO - #{conceito_oo.sample}
 Conceito OO - #{conceito_oo.sample}
 Conceito #{conceito_p.sample}
@@ -42,7 +42,7 @@ Valor da Compra: R$ #{val}000,00
 Pagamento: 0+#{n_parcelas} x R$ #{parcelas},00
 Saldo acima do limite do cliente: R$ #{saldo},00
 
-Limites
+Limites:
 Crédito Bemol: R$ #{cred}00,00
 Limite Disponível: R$ #{cred}00,00
 Adicional Neurotech: R$ #{["1","2"].sample}#{Faker::Number.between(1, 9)}00,00
