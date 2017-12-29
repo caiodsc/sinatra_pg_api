@@ -269,10 +269,11 @@ class App < Sinatra::Base
     man = Manager.includes(:faqs).where(:user_id => params[:id]).take(1)
     man[0].update(:last_activity => Time.now)
     @faq = man[0].faqs.where(:status_ap => nil).take(1).first
+    #p @faq["question"]
     case request_type
       when 'text/html'
         #halt haml(:index, :locals => data)
-        erb :login
+        erb :more_info
         #return request.accept[0].to_json
       when 'application/json'
         man = Manager.includes(:faqs).where(:user_id => params[:id]).take(1)

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <title>Bemol - Aprovação</title>
+  <!-- Ícone do site -->
+  <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/2/22/Bemol.logo.png">
+  <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+  <!--Import Google Icon Font-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <!--Let browser know website is optimized for mobile-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <!--<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />-->
+  <style>
+    body {
+      display: flex;
+      min-height: 100vh;
+      flex-direction: column;
+    }
+
+    main {
+      flex: 1 0 auto;
+    }
+
+    body {
+      background: #fff;
+    }
+  </style>
+</head>
+
+<body>
+<!--Import jQuery before materialize.js-->
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+<!-- Compiled and minified JavaScript -->
+
+
+<div class="section"></div>
+<main>
+  <center>
+    <img class="responsive-img" style="width: 250px;" src="https://upload.wikimedia.org/wikipedia/commons/2/22/Bemol.logo.png" />
+
+    <h5 class="blue-text">Informações Pré-Venda</h5>
+    <div class="section"></div>
+
+    <div class="container">
+      <div class="z-depth-1 grey lighten-4 row" style="display: inline-block; padding: 32px 48px 0px 48px; border: 1px solid #EEE;">
+
+        <!--<div><#%= @faq["question"] %></div>-->
+        <div style="white-space: pre-line;"><%= @faq["question"] %></div>
+        <div class="section"></div>
+      </div>
+    </div>
+    <!--<a href="#!">Criar conta</a>-->
+  </center>
+
+  <div class="section"></div>
+  <div class="section"></div>
+</main>
+
+</body>
+
+</html>
