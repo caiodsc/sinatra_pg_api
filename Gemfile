@@ -25,7 +25,7 @@ gem 'mongoid'
 gem 'bson_ext'
 
 # Roar/Representable
-#gem 'roar'
-#gem 'multi_json'
+gem 'roar'
+gem 'multi_json'
 gem 'rufus-scheduler'
 gem 'tzinfo-data'
