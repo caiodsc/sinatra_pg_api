@@ -9,6 +9,8 @@ require 'openssl'
 #require 'puma'
 require 'rack/ssl'
 require_relative './encrypt_decrypt.rb'
+require 'mongoid'
+require 'roar/json/hal'
 
 OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 
@@ -27,6 +29,31 @@ Facebook::Messenger::Subscriptions.subscribe(access_token: ACCESS_TOKEN)
 Dir["./models/*.rb"].each {|file| require file }
 
 #configure { set :server, :puma }
+
+configure do
+  Mongoid.load!("config/mongoid.yml", settings.environment)
+  #set :server, :puma # default to puma for performance
+end
+
+class MongoFaq
+  include Mongoid::Document
+  include Mongoid::Timestamps
+
+  field :question, type: String
+  #field :status_ap, type String
+end
+
+module MongoFaqRepresenter
+  include Roar::JSON::HAL
+
+  property :question
+  #property :status_ap
+  property :created_at, :writeable=>false
+
+  link :self do
+    "/faq/#{id}"
+  end
+end
 
 class App < Sinatra::Base
   #use Rack::SSL
@@ -82,13 +109,18 @@ class App < Sinatra::Base
               "displayText": "Não há mais análises pendentes no momento! 🙂"
           }.to_json
         else
+          mongo_faq = MongoFaq.new(:question => faq[0][:question].to_s)
+          faq_id = mongo_faq.id.to_s
           #res = faq
           #faq[0][:status_code] = "read"
-          if true
+          if mongo_faq.save
+            p mongo_faq
             #Chatbot.send_next_approval(messenger_id, faq[0][:question].to_s, "test")
             Chatbot.send_text(messenger_id, "Dados da Pré Venda 👇")
             Chatbot.send_text(messenger_id, faq[0][:question].to_s)
-            Chatbot.send_next_approval(messenger_id, request.base_url.to_s)
+            Chatbot.send_next_approval(messenger_id, request.base_url.to_s, faq_id)
+          else
+            Chatbot.send_text(messenger_id, "Houve um erro ao processar a próxima aprovação, por favor tente novamente! 😥")
           end
         end
 
@@ -250,6 +282,23 @@ class App < Sinatra::Base
         #halt haml(:index, :locals => data)
         erb :more_info
         #return request.accept[0].to_json
+      when 'application/json'
+        #faq = Faq.where(:gerente_id => params[:id], :status_ap => nil).take(1)
+        return @faq.to_json
+    end
+  end
+
+  get '/faq/:id' do
+    request_type = (JSON.parse(request.accept[0].to_json))["type"]
+    @faq_unformated = MongoFaq.where(:id => params[:id])
+    @faq =  JSON.parse(MongoFaqRepresenter.for_collection.prepare(@faq_unformated).to_json)[0]
+    p @faq
+    #p @faq["question"]
+    case request_type
+      when 'text/html'
+        #halt haml(:index, :locals => data)
+        erb :more_info
+      #return request.accept[0].to_json
       when 'application/json'
         #faq = Faq.where(:gerente_id => params[:id], :status_ap => nil).take(1)
         return @faq.to_json

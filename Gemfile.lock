@@ -18,6 +18,8 @@ GEM
     bson_ext (1.5.1)
     chronic (0.10.2)
     concurrent-ruby (1.0.5)
+    declarative (0.0.10)
+    declarative-option (0.1.0)
     domain_name (0.5.20170404)
       unf (>= 0.0.5, < 1.0.0)
     et-orbi (1.0.8)
@@ -44,6 +46,7 @@ GEM
     mongoid (6.2.1)
       activemodel (~> 5.1)
       mongo (>= 2.4.1, < 3.0.0)
+    multi_json (1.12.2)
     multi_xml (0.6.0)
     mustermann (1.0.1)
     netrc (0.11.0)
@@ -63,6 +66,10 @@ GEM
     rack-test (0.6.3)
       rack (>= 1.0)
     rake (12.3.0)
+    representable (3.0.4)
+      declarative (< 0.1.0)
+      declarative-option (< 0.2.0)
+      uber (< 0.2.0)
     rest-client (2.0.2-x86-mingw32)
       ffi (~> 1.9)
       http-cookie (>= 1.0.2, < 2.0)
@@ -76,6 +83,8 @@ GEM
       rack (>= 1.0)
       rack-test (~> 0.6.2)
       ripl (>= 0.7.0)
+    roar (1.1.0)
+      representable (~> 3.0.0)
     rufus-scheduler (3.4.2)
       et-orbi (~> 1.0)
     sinatra (2.0.0)
@@ -97,6 +106,7 @@ GEM
       thread_safe (~> 0.1)
     tzinfo-data (1.2017.3)
       tzinfo (>= 1.0.0)
+    uber (0.1.0)
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.4-x86-mingw32)
@@ -115,6 +125,7 @@ DEPENDENCIES
   lerolero_generator
   mongo (~> 2.1)
   mongoid
+  multi_json
   pg
   pg_search
   puma
@@ -122,6 +133,7 @@ DEPENDENCIES
   rack-ssl
   rake
   rest-client
+  roar
   rufus-scheduler
   sinatra
   sinatra-activerecord

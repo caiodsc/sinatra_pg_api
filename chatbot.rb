@@ -39,8 +39,9 @@ class Chatbot
                 }, access_token: ACCESS_TOKEN)
   end
 
-  def self.send_next_approval(id, base_url)
-    url = base_url + "/faqs/gerente/#{id.encrypt}/last"
+  def self.send_next_approval(id, base_url, faq_id)
+    #url = base_url + "/faqs/gerente/#{id.encrypt}/last"
+    url = base_url + "/faq/#{faq_id}"
     Bot.deliver({
                     recipient: {
                         id: id
