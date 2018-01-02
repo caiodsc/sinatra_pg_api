@@ -17,10 +17,12 @@ gem 'rest-client'
 gem 'facebook-messenger'
 gem 'will_paginate', '~> 3.1.0'
 gem 'rack-ssl'
+
+
 # Mongo + Mongoid
-#gem 'mongo', '~> 2.1'
-#gem 'mongoid'
-#gem 'bson_ext'
+gem 'mongo', '~> 2.1'
+gem 'mongoid'
+gem 'bson_ext'
 
 # Roar/Representable
 #gem 'roar'
