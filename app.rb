@@ -290,9 +290,12 @@ class App < Sinatra::Base
 
   get '/faq/:id' do
     request_type = (JSON.parse(request.accept[0].to_json))["type"]
-    @faq_unformated = MongoFaq.where(:id => params[:id])
+    @faq_unformated = MongoFaq.where(:id => params[:id], :created_at => (1.minutes.ago..Time.now))
+    if @faq_unformated.empty?
+      return [410, {:message=>"The target resource is no longer available at the origin server and this condition is likely to be permanent."}.to_json]
+    end
     @faq =  JSON.parse(MongoFaqRepresenter.for_collection.prepare(@faq_unformated).to_json)[0]
-    p @faq
+    #p @faq
     #p @faq["question"]
     case request_type
       when 'text/html'
